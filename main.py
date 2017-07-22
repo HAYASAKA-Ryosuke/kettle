@@ -17,12 +17,14 @@ def hello_post(request):
 
 def ham(request):
     response = Response('ham egg spam')
+    print(request.actions)
     return response
 
 application = Application()
-application.router.register('GET', '^/$', hello)
-application.router.register('POST', '^/$', hello_post)
-application.router.register('GET', '^/ham$', ham)
+application.router.register('GET', '/', hello)
+application.router.register('POST', '/', hello_post)
+application.router.register('GET', '/hams/', ham)
+application.router.register('GET', '/hams/:ham_id/eggs/:egg_id/', ham)
 
 if __name__ == '__main__':
     httpd = simple_server.make_server('', 8000, application)

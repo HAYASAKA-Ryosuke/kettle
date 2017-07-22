@@ -2,8 +2,9 @@ import urllib
 
 
 class Request:
-    def __init__(self, environ):
+    def __init__(self, environ, actions):
         self.META = environ
+        self.actions = actions
 
     @property
     def query_params(self):
