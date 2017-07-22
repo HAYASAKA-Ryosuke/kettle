@@ -1,6 +1,6 @@
-from response import Response
 from wsgiref import simple_server
-from application import Application
+from kettle.application import Application
+from kettle.response import Response
 
 
 def hello(request):
@@ -23,6 +23,7 @@ def ham(request):
 application = Application()
 application.router.register('GET', '/', hello)
 application.router.register('POST', '/', hello_post)
+application.router.register('PUT', '/', hello_post)
 application.router.register('GET', '/hams/', ham)
 application.router.register('GET', '/hams/:ham_id/eggs/:egg_id/', ham)
 
