@@ -2,13 +2,15 @@ class Response:
 
     STATUS = {200: '200 OK', 404: '404 Not Found', 400: '400 Bad Request'}
 
-    def send(self, body='', status=200, headers=[('Content-type', 'text/html; charset=UTF-8')]):
+    def _send(self, body, status, headers):
         self.status = self.STATUS.get(status, 200)
         self.headers = headers
-        self.body = body
+        self.body = body.encode('utf-8') if isinstance(body, str) else body
         return self
 
-    def params(self):
-        if isinstance(self.body, str):
-            self.body = self.body.encode('utf-8')
-        return self.status, self.headers, self.body
+    def text(self, body='', status=200, headers=[('Content-type', 'text/html; charset=UTF-8')]):
+        return self._send(body, status, headers)
+
+    def json(self, body='', status=200):
+        headers = [('Content-type', 'application/json; charset=UTF-8')]
+        return self._send(body, status, headers)

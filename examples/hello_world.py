@@ -4,17 +4,17 @@ from kettle.application import Application
 
 def hello(request, response):
     print(request.query_params)
-    return response.send('Hello World!!')
+    return response.text('Hello World!!')
 
 
 def hello_post(request, response):
     print(request.data)
-    return response.send('Hello POST!!')
+    return response.text('Hello POST!!')
 
 
 def ham(request, response):
     print(request.actions)
-    return response.send('ham egg spam')
+    return response.text('ham egg spam')
 
 application = Application()
 application.router.register('GET', '/', hello)
