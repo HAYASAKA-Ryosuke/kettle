@@ -1,24 +1,20 @@
 from wsgiref import simple_server
 from kettle.application import Application
-from kettle.response import Response
 
 
-def hello(request):
+def hello(request, response):
     print(request.query_params)
-    response = Response('Hello World!!')
-    return response
+    return response.text('Hello World!!')
 
 
-def hello_post(request):
+def hello_post(request, response):
     print(request.data)
-    response = Response('Hello POST!!')
-    return response
+    return response.text('Hello POST!!')
 
 
-def ham(request):
-    response = Response('ham egg spam')
+def ham(request, response):
     print(request.actions)
-    return response
+    return response.text('ham egg spam')
 
 application = Application()
 application.router.register('GET', '/', hello)
