@@ -1,16 +1,19 @@
-from wsgiref import simple_server import os
+from wsgiref import simple_server
+import os
 from kettle.application import Application
 
 
-def hello(request, response):
-    print(request.query_params)
-    return response.text('Hello World!!')
+def download_file(request, response):
+    filename = request.query_params.get('filename')
+    if filename:
+        target = os.path.join('uploads', filename[0])
+        return response.file(target)
+    return response.json('file not found', status=404)
 
 
-def hello_post(request, response):
+def upload_file(request, response):
     file_data = request.form['newfile'].file
     filename = request.form['newfile'].filename
-    # write the content of the uploaded file to a local file
     target = os.path.join('uploads', filename)
     f = open(target, 'wb')
     while True:
@@ -19,19 +22,12 @@ def hello_post(request, response):
             break
         f.write(buf)
     f.close()
-    return response.text('Hello POST!!')
+    return response.text('Success: {}'.format(filename))
 
-
-def ham(request, response):
-    print(request.actions)
-    return response.text('ham egg spam')
 
 application = Application()
-application.router.register('GET', '/', hello)
-application.router.register('POST', '/', hello_post)
-application.router.register('PUT', '/', hello_post)
-application.router.register('GET', '/hams/', ham)
-application.router.register('GET', '/hams/:ham_id/eggs/:egg_id/', ham)
+application.router.register('GET', '/', download_file)
+application.router.register('POST', '/', upload_file)
 
 if __name__ == '__main__':
     httpd = simple_server.make_server('', 8000, application)

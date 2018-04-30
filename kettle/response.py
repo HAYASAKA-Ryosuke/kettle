@@ -14,3 +14,6 @@ class Response:
     def json(self, body='', status=200):
         headers = [('Content-type', 'application/json; charset=UTF-8')]
         return self._send(body, status, headers)
+
+    def file(self, file_path, status=200, headers=[('Accept-Ranges', 'bytes')]):
+        return self._send(open(file_path, 'rb').read(), status, headers)
