@@ -6,7 +6,10 @@ class Request:
     def __init__(self, environ, actions):
         self.META = environ
         self.actions = actions
-        self._form = cgi.FieldStorage(environ=self.META, fp=self.META.get('wsgi.input'))
+        if self.META.get('CONTENT_TYPE', '').startswith('multipart/'):
+            self._form = cgi.FieldStorage(environ=self.META, fp=self.META.get('wsgi.input'), encoding='utf8', keep_blank_values=True)
+        else:
+            self._form = None
 
     @property
     def query_params(self):
