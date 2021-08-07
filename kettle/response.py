@@ -1,6 +1,6 @@
 class Response:
 
-    STATUS = {200: '200 OK', 404: '404 Not Found', 400: '400 Bad Request'}
+    STATUS = {200: '200 OK', 404: '404 Not Found', 301: '301 Moved Paramanently', 400: '400 Bad Request'}
 
     def _send(self, body, status, headers):
         self.status = self.STATUS.get(status, 200)
@@ -17,3 +17,8 @@ class Response:
 
     def file(self, file_path, status=200, headers=[('Accept-Ranges', 'bytes')]):
         return self._send(open(file_path, 'rb').read(), status, headers)
+
+    def redirect(self, redirect_path):
+        status = 301
+        headers = [('Location', redirect_path)]
+        return self._send('', status, headers)
