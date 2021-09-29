@@ -16,12 +16,16 @@ def ham(request, response):
     print(request.actions)
     return response.text('ham egg spam')
 
+def redirect(request, response):
+    return response.redirect('/hams/', 301)
+
 application = Application()
 application.router.register('GET', '/', hello)
 application.router.register('POST', '/', hello_post)
 application.router.register('PUT', '/', hello_post)
 application.router.register('GET', '/hams/', ham)
 application.router.register('GET', '/hams/:ham_id/eggs/:egg_id/', ham)
+application.router.register('GET', '/redirect/', redirect)
 
 if __name__ == '__main__':
     httpd = simple_server.make_server('', 8000, application)
